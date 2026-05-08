@@ -39,12 +39,14 @@ class AppRepository private constructor(private val context: Context) {
     }
 
     fun filterStations(
+        text: String = "",
         connector: String = "",
         municipality: String = "",
         usageType: String = "",
         currentType: String = ""
     ): LiveData<List<StationEntity>> {
         return stationDao.filterStations(
+            text.trim(),
             connector.trim(),
             municipality.trim(),
             usageType.trim(),

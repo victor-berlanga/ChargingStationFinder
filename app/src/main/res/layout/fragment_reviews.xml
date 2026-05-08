@@ -2,55 +2,87 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="8dp">
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingHorizontal="6dp"
+        android:paddingBottom="4dp"
         android:text="Reseñas"
         android:textColor="@color/text_dark"
         android:textSize="20sp"
         android:textStyle="bold" />
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:orientation="vertical"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/txtReviewCount"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Reseñas: 0"
+            android:textColor="@color/text_muted" />
+
+        <EditText
+            android:id="@+id/edtComment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input"
+            android:hint="Comentario"
+            android:inputType="textMultiLine"
+            android:minLines="2" />
+
+        <EditText
+            android:id="@+id/edtRating"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input"
+            android:hint="Calificación 1 a 5"
+            android:inputType="number" />
+
+        <Button
+            android:id="@+id/btnAddReview"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/indigo_primary"
+            android:text="Agregar reseña"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
     <TextView
-        android:id="@+id/txtReviewCount"
+        android:id="@+id/txtEmptyReviews"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Reseñas: 0"
-        android:textColor="@color/text_muted" />
-
-    <EditText
-        android:id="@+id/edtComment"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Comentario"
-        android:inputType="textMultiLine"
-        android:minLines="2" />
-
-    <EditText
-        android:id="@+id/edtRating"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="Calificación 1 a 5"
-        android:inputType="number" />
-
-    <Button
-        android:id="@+id/btnAddReview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Agregar reseña" />
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_card"
+        android:gravity="center"
+        android:padding="18dp"
+        android:text="Todavía no hay reseñas para esta estación."
+        android:textColor="@color/text_muted"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerReviews"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="8dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
 
     <Button
         android:id="@+id/btnBack"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Regresar" />
+        android:backgroundTint="@color/white"
+        android:text="Regresar"
+        android:textColor="@color/text_dark" />
 </LinearLayout>

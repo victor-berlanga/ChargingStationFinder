@@ -40,6 +40,7 @@ class ReviewsFragment : Fragment() {
         reviewViewModel.reviews.observe(viewLifecycleOwner) { reviews ->
             adapter.submitList(reviews)
             binding.txtReviewCount.text = "Reseñas: ${reviews.size}"
+            binding.txtEmptyReviews.visibility = if (reviews.isEmpty()) View.VISIBLE else View.GONE
         }
 
         reviewViewModel.errorMessage.observe(viewLifecycleOwner) { message ->

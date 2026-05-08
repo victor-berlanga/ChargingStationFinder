@@ -8,7 +8,8 @@
         android:id="@+id/tvMapTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="12dp"
+        android:background="@drawable/bg_card"
+        android:padding="10dp"
         android:text="Mapa de estaciones"
         android:textColor="@color/text_dark"
         android:textSize="20sp"
@@ -18,8 +19,8 @@
         android:id="@+id/txtMapMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingHorizontal="12dp"
-        android:paddingBottom="8dp"
+        android:paddingHorizontal="10dp"
+        android:paddingVertical="6dp"
         android:text=""
         android:textColor="@color/text_muted" />
 

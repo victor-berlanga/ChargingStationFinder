@@ -8,7 +8,8 @@
         android:id="@+id/txtScreenTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:paddingHorizontal="6dp"
+        android:paddingBottom="6dp"
         android:textColor="@color/text_dark"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -17,40 +18,190 @@
         android:id="@+id/searchContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:background="@drawable/bg_card"
+        android:orientation="vertical"
+        android:padding="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/edtSearch"
+                android:layout_width="0dp"
+                android:layout_height="44dp"
+                android:layout_weight="1"
+                android:background="@drawable/bg_input"
+                android:hint="Buscar estación"
+                android:inputType="text"
+                android:textSize="14sp" />
+
+            <Button
+                android:id="@+id/btnSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="@color/indigo_primary"
+                android:text="Buscar"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnClearSearch"
+                android:layout_width="wrap_content"
+                android:layout_height="44dp"
+                android:layout_marginStart="6dp"
+                android:backgroundTint="@color/white"
+                android:text="X"
+                android:textColor="@color/text_dark" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnToggleFilters"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/indigo_light"
+                android:text="Mostrar filtros"
+                android:textColor="@color/text_dark" />
+
+            <TextView
+                android:id="@+id/txtFilterSummary"
+                android:layout_width="0dp"
+                android:layout_height="40dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:text="Filtros: 0 activos"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/filterContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
+        android:background="@drawable/bg_filter_panel"
+        android:orientation="vertical"
+        android:padding="8dp"
+        android:visibility="gone">
 
         <EditText
-            android:id="@+id/edtSearch"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:hint="Buscar estación"
-            android:inputType="text" />
+            android:id="@+id/edtConnector"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="@drawable/bg_input"
+            android:hint="Conector: J1772, CCS, NACS"
+            android:inputType="text"
+            android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/btnSearch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Buscar" />
+        <EditText
+            android:id="@+id/edtMunicipality"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/bg_input"
+            android:hint="Municipio"
+            android:inputType="text"
+            android:textSize="14sp" />
 
-        <Button
-            android:id="@+id/btnClearSearch"
-            android:layout_width="wrap_content"
+        <RadioGroup
+            android:id="@+id/radioUsage"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Limpiar" />
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbPublic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Public" />
+
+            <RadioButton
+                android:id="@+id/rbPrivate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Private" />
+        </RadioGroup>
+
+        <RadioGroup
+            android:id="@+id/radioCurrent"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbAc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="AC" />
+
+            <RadioButton
+                android:id="@+id/rbDc"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="DC" />
+        </RadioGroup>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btnApplyFilters"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/indigo_primary"
+                android:text="Aplicar filtros"
+                android:textColor="@color/white" />
+
+            <Button
+                android:id="@+id/btnClearFilters"
+                android:layout_width="0dp"
+                android:layout_height="42dp"
+                android:layout_marginStart="8dp"
+                android:layout_weight="1"
+                android:backgroundTint="@color/white"
+                android:text="Limpiar filtros"
+                android:textColor="@color/text_dark" />
+        </LinearLayout>
     </LinearLayout>
 
     <TextView
         android:id="@+id/txtResultCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="8dp"
+        android:paddingHorizontal="6dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="4dp"
         android:text="Resultados: 0"
         android:textColor="@color/text_muted" />
+
+    <TextView
+        android:id="@+id/txtEmptyList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_card"
+        android:gravity="center"
+        android:padding="18dp"
+        android:text="No hay estaciones para mostrar."
+        android:textColor="@color/text_muted"
+        android:visibility="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recyclerStations"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:clipToPadding="false"
+        android:paddingBottom="8dp" />
 </LinearLayout>

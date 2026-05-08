@@ -21,6 +21,7 @@ class StationListFragment : Fragment() {
     private val stationViewModel: StationViewModel by activityViewModels()
     private val favoritesViewModel: FavoritesViewModel by viewModels()
     private lateinit var adapter: StationAdapter
+    private var filtersVisible = false
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,52 +41,100 @@ class StationListFragment : Fragment() {
         binding.recyclerStations.adapter = adapter
 
         binding.btnSearch.setOnClickListener {
-            stationViewModel.searchStations(binding.edtSearch.text.toString())
+            applySearchAndFilters()
         }
 
         binding.btnClearSearch.setOnClickListener {
             binding.edtSearch.setText("")
-            stationViewModel.searchStations("")
+            applySearchAndFilters()
+        }
+
+        binding.btnToggleFilters.setOnClickListener {
+            filtersVisible = !filtersVisible
+            updateFilterVisibility()
+        }
+
+        binding.btnApplyFilters.setOnClickListener {
+            applySearchAndFilters()
+        }
+
+        binding.btnClearFilters.setOnClickListener {
+            binding.edtSearch.setText("")
+            binding.edtConnector.setText("")
+            binding.edtMunicipality.setText("")
+            binding.radioUsage.clearCheck()
+            binding.radioCurrent.clearCheck()
+            applySearchAndFilters()
         }
 
         val onlyFavorites = requireArguments().getBoolean(ARG_FAVORITES, false)
-        val isFiltered = requireArguments().getBoolean(ARG_FILTERED, false)
 
-        when {
-            onlyFavorites -> {
-                binding.txtScreenTitle.text = "Favoritas"
-                binding.searchContainer.visibility = View.GONE
-                favoritesViewModel.favorites.observe(viewLifecycleOwner) { stations ->
-                    adapter.submitList(stations)
-                    showCount(stations.size)
-                }
+        if (onlyFavorites) {
+            binding.txtScreenTitle.text = "Favoritas"
+            binding.searchContainer.visibility = View.GONE
+            binding.filterContainer.visibility = View.GONE
+            favoritesViewModel.favorites.observe(viewLifecycleOwner) { stations ->
+                adapter.submitList(stations)
+                showCount(stations.size)
             }
-            isFiltered -> {
-                binding.txtScreenTitle.text = "Resultados filtrados"
-                binding.searchContainer.visibility = View.GONE
-                stationViewModel.filterStations(
-                    requireArguments().getString(ARG_CONNECTOR).orEmpty(),
-                    requireArguments().getString(ARG_MUNICIPALITY).orEmpty(),
-                    requireArguments().getString(ARG_USAGE).orEmpty(),
-                    requireArguments().getString(ARG_CURRENT).orEmpty()
-                )
-                stationViewModel.filteredStations.observe(viewLifecycleOwner) { stations ->
-                    adapter.submitList(stations)
-                    showCount(stations.size)
-                }
+        } else {
+            binding.txtScreenTitle.text = "Estaciones"
+            updateFilterVisibility()
+            stationViewModel.filteredStations.observe(viewLifecycleOwner) { stations ->
+                adapter.submitList(stations)
+                showCount(stations.size)
             }
-            else -> {
-                binding.txtScreenTitle.text = "Estaciones de carga"
-                stationViewModel.searchResults.observe(viewLifecycleOwner) { stations ->
-                    adapter.submitList(stations)
-                    showCount(stations.size)
-                }
-            }
+            applySearchAndFilters()
+        }
+    }
+
+    private fun applySearchAndFilters() {
+        stationViewModel.filterStations(
+            binding.edtSearch.text.toString(),
+            binding.edtConnector.text.toString(),
+            binding.edtMunicipality.text.toString(),
+            selectedUsageType(),
+            selectedCurrentType()
+        )
+        updateFilterSummary()
+    }
+
+    private fun selectedUsageType(): String {
+        return when (binding.radioUsage.checkedRadioButtonId) {
+            binding.rbPublic.id -> "Public"
+            binding.rbPrivate.id -> "Private"
+            else -> ""
+        }
+    }
+
+    private fun selectedCurrentType(): String {
+        return when (binding.radioCurrent.checkedRadioButtonId) {
+            binding.rbAc.id -> "AC"
+            binding.rbDc.id -> "DC"
+            else -> ""
         }
     }
 
     private fun showCount(count: Int) {
         binding.txtResultCount.text = "Resultados: $count"
+        binding.txtEmptyList.visibility = if (count == 0) View.VISIBLE else View.GONE
+    }
+
+    private fun updateFilterVisibility() {
+        binding.filterContainer.visibility = if (filtersVisible) View.VISIBLE else View.GONE
+        binding.btnToggleFilters.text = if (filtersVisible) "Ocultar filtros" else "Mostrar filtros"
+    }
+
+    private fun updateFilterSummary() {
+        val activeFilters = listOf(
+            binding.edtSearch.text.toString(),
+            binding.edtConnector.text.toString(),
+            binding.edtMunicipality.text.toString(),
+            selectedUsageType(),
+            selectedCurrentType()
+        ).count { it.isNotBlank() }
+
+        binding.txtFilterSummary.text = "Filtros: $activeFilters activos"
     }
 
     override fun onDestroyView() {
@@ -95,33 +144,11 @@ class StationListFragment : Fragment() {
 
     companion object {
         private const val ARG_FAVORITES = "favorites"
-        private const val ARG_FILTERED = "filtered"
-        private const val ARG_CONNECTOR = "connector"
-        private const val ARG_MUNICIPALITY = "municipality"
-        private const val ARG_USAGE = "usage"
-        private const val ARG_CURRENT = "current"
 
         fun newInstance(onlyFavorites: Boolean): StationListFragment {
             return StationListFragment().apply {
                 arguments = Bundle().apply {
                     putBoolean(ARG_FAVORITES, onlyFavorites)
-                }
-            }
-        }
-
-        fun newFilterInstance(
-            connector: String,
-            municipality: String,
-            usageType: String,
-            currentType: String
-        ): StationListFragment {
-            return StationListFragment().apply {
-                arguments = Bundle().apply {
-                    putBoolean(ARG_FILTERED, true)
-                    putString(ARG_CONNECTOR, connector)
-                    putString(ARG_MUNICIPALITY, municipality)
-                    putString(ARG_USAGE, usageType)
-                    putString(ARG_CURRENT, currentType)
                 }
             }
         }

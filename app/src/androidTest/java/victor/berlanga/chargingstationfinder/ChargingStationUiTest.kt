@@ -65,13 +65,15 @@ class ChargingStationUiTest {
             onView(withId(R.id.btnList)).check(matches(isDisplayed()))
             onView(withId(R.id.btnMap)).check(matches(isDisplayed()))
             onView(withId(R.id.btnFavorites)).check(matches(isDisplayed()))
-            onView(withId(R.id.btnFilters)).check(matches(isDisplayed()))
         }
     }
 
     @Test
     fun stationListScreenDisplaysRecyclerView() {
         ActivityScenario.launch(MainActivity::class.java).use {
+            onView(withId(R.id.edtSearch)).check(matches(isDisplayed()))
+            onView(withId(R.id.btnToggleFilters)).perform(click())
+            onView(withId(R.id.btnApplyFilters)).check(matches(isDisplayed()))
             onView(withId(R.id.recyclerStations)).check(matches(isDisplayed()))
         }
     }

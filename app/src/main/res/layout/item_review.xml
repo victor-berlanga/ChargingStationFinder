@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="6dp"
-    android:background="@color/green_light"
+    android:layout_marginHorizontal="4dp"
+    android:layout_marginVertical="5dp"
+    android:background="@drawable/bg_card"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -11,17 +12,21 @@
         android:id="@+id/txtRating"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_dark"
+        android:textColor="@color/indigo_primary"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtComment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:layout_marginTop="3dp"
+        android:textColor="@color/text_dark" />
 
     <TextView
         android:id="@+id/txtDate"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="@color/text_muted" />
+        android:layout_marginTop="3dp"
+        android:textColor="@color/text_muted"
+        android:textSize="12sp" />
 </LinearLayout>

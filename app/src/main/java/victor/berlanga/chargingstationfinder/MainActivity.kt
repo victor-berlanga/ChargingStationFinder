@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import victor.berlanga.chargingstationfinder.databinding.ActivityMainBinding
-import victor.berlanga.chargingstationfinder.view.fragment.FiltersFragment
 import victor.berlanga.chargingstationfinder.view.fragment.MapFragment
 import victor.berlanga.chargingstationfinder.view.fragment.ReviewsFragment
 import victor.berlanga.chargingstationfinder.view.fragment.StationDetailFragment
@@ -36,9 +35,6 @@ class MainActivity : AppCompatActivity() {
         binding.btnFavorites.setOnClickListener {
             showStationList(true)
         }
-        binding.btnFilters.setOnClickListener {
-            openFragment(FiltersFragment())
-        }
 
         if (savedInstanceState == null) {
             showStationList(false)
@@ -55,18 +51,6 @@ class MainActivity : AppCompatActivity() {
 
     fun showReviews(stationId: Int) {
         openFragment(ReviewsFragment.newInstance(stationId), addToBackStack = true)
-    }
-
-    fun showFilteredStations(
-        connector: String,
-        municipality: String,
-        usageType: String,
-        currentType: String
-    ) {
-        openFragment(
-            StationListFragment.newFilterInstance(connector, municipality, usageType, currentType),
-            addToBackStack = true
-        )
     }
 
     private fun openFragment(

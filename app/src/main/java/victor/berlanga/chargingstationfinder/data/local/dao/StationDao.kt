@@ -37,7 +37,12 @@ interface StationDao {
     @Query(
         """
         SELECT * FROM stations
-        WHERE (:connector = '' OR connectorStandard LIKE '%' || :connector || '%')
+        WHERE (:text = ''
+           OR name LIKE '%' || :text || '%'
+           OR address LIKE '%' || :text || '%'
+           OR municipality LIKE '%' || :text || '%'
+           OR connectorStandard LIKE '%' || :text || '%')
+          AND (:connector = '' OR connectorStandard LIKE '%' || :connector || '%')
           AND (:municipality = '' OR municipality LIKE '%' || :municipality || '%')
           AND (:usageType = '' OR usageType LIKE '%' || :usageType || '%')
           AND (:currentType = '' OR currentType LIKE '%' || :currentType || '%')
@@ -45,6 +50,7 @@ interface StationDao {
         """
     )
     fun filterStations(
+        text: String,
         connector: String,
         municipality: String,
         usageType: String,

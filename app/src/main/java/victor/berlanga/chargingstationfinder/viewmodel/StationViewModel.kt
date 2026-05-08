@@ -23,6 +23,7 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
     }
     val filteredStations: LiveData<List<StationEntity>> = filterData.switchMap { filter ->
         repository.filterStations(
+            filter.text,
             filter.connector,
             filter.municipality,
             filter.usageType,
@@ -64,12 +65,16 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun filterStations(
+        text: String,
         connector: String,
         municipality: String,
         usageType: String,
         currentType: String
     ) {
-        filterData.value = FilterData(connector, municipality, usageType, currentType)
+        filterData.value = FilterData(text, connector, municipality, usageType, currentType)
+        viewModelScope.launch {
+            repository.saveSearchHistory(text)
+        }
     }
 
     fun selectStation(stationId: Int) {
@@ -79,6 +84,7 @@ class StationViewModel(application: Application) : AndroidViewModel(application)
     }
 
     private data class FilterData(
+        val text: String = "",
         val connector: String = "",
         val municipality: String = "",
         val usageType: String = "",
